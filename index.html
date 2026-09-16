@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0c1118" />
+    <meta
+      name="description"
+      content="Follow a request through an AI factory: networks, electricity, cooling, GPU inference, and the answer returning to your screen."
+    />
+    <title>AI Factory</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="journey">
+      <main class="stage" aria-label="A scroll journey through an AI factory">
+        <header><span class="brand">AI Factory</span></header>
+        <div class="visual" id="visual">
+          <canvas id="scene" aria-label="Blender-rendered AI factory"></canvas
+          ><span id="media-status" role="status">Preparing the factory…</span>
+        </div>
+
+        <section class="copy" id="copy">
+          <p class="phase" id="phase"></p>
+          <h1 id="title">You ask. What happens next?</h1>
+          <p class="description" id="description"></p>
+          <div id="opening-prompt">
+            <span class="small-label">Your question</span>
+            <p data-prompt></p>
+          </div>
+          <p id="scroll-cue">Scroll to follow the request</p>
+        </section>
+
+        <section hidden id="tokens" aria-label="Illustrative token sequence">
+          <p id="token-label">Input tokens · illustrative boundaries</p>
+          <p id="token-context"></p>
+          <div id="token-list"></div>
+        </section>
+        <section hidden id="answer-panel" aria-label="Scripted response">
+          <div class="answer-prompt">
+            <span class="small-label">Prompt</span>
+            <p data-prompt></p>
+          </div>
+          <div class="answer-content">
+            <span class="small-label">Response</span>
+            <p id="answer"></p>
+          </div>
+        </section>
+      </main>
+    </div>
+    <noscript
+      ><p class="noscript">
+        Enable JavaScript to explore the factory.
+      </p></noscript
+    >
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
