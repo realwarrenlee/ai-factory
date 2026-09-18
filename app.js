@@ -49,7 +49,7 @@ function pump() {
     image.decoding = "async";
     image.onload = () => {
       cache.set(task.key, image);
-      while (cache.size > 100) cache.delete(cache.keys().next().value);
+      while (cache.size > 300) cache.delete(cache.keys().next().value);
       finish(image);
     };
     image.onerror = () => finish(null);
@@ -109,7 +109,7 @@ function requestFrame(s) {
           "This frame could not load. Scroll to try another.";
       }
     });
-  for (let delta = 1; delta <= 5; delta++) {
+  for (let delta = 1; delta <= 15; delta++) {
     if (n + delta < count) load(seq, n + delta);
     if (n - delta >= 0) load(seq, n - delta);
   }
@@ -198,12 +198,23 @@ new ResizeObserver(resize).observe(canvas);
 resize();
 for (const element of document.querySelectorAll("[data-prompt]"))
   element.textContent = PROMPT;
+// Eagerly load the hero frame so the canvas isn't blank on first paint.
+load("campus", 0, true).then((image) => {
+  if (image && !currentKey) {
+    currentKey = "campus/0";
+    draw(image);
+    $("media-status").hidden = true;
+  }
+});
 try {
   const response = await fetch("./frames/manifest.json");
   if (!response.ok) throw Error();
   manifest = await response.json();
   currentKey = "";
   schedule();
+  // Preload the entire opening sequence so the first scroll is smooth.
+  const campusCount = manifest.campus?.count ?? 0;
+  for (let i = 0; i < campusCount; i++) load("campus", i);
 } catch {
   $("media-status").textContent =
     "Factory imagery could not load. Please refresh to try again.";
